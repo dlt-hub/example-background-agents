@@ -1,0 +1,64 @@
+init:
+  version: 0.1.1
+  description: Shared rules, secrets handling, and workspace MCP for dlthub
+  tags:
+  - dlthub
+  - init
+  - rules
+  - secrets
+  - mcp
+  installed_at: '2026-09-17T14:42:20.035047+00:00'
+  agent: claude
+  files:
+    .claudeignore:
+      sha3_256: 1aa4dc9286dd219dcb55399f388c5ee1f940ab5e399a42b644d488cba57a9ec0
+    .claude/rules/init-dlthub-workspace.md:
+      sha3_256: bd0d85b8bf6b0e0ce454982cfa1f63baddc67cbd1f9d05254a4b6185b48643c0
+  name: init
+dlthub-platform:
+  version: 0.3.0
+  description: Deploy dlthub workspace and pipelines to the dltHub Platform
+  tags:
+  - dlthub
+  - deploy
+  - platform
+  dependencies:
+  - init
+  workflow_entry_skill: setup-runtime
+  installed_at: '2026-09-25T12:27:55.281681+00:00'
+  agent: claude
+  files:
+    .claude/skills/debug-deployment/SKILL.md:
+      sha3_256: 41b5fbc2741aec5c451a7118dad823801aa22a0711de6cfadf9f8c1984495cb7
+    .claude/skills/debug-deployment/cli-reference.md:
+      sha3_256: 1193da060b890ff738fcfcd3b288999f3a67c4dff3b8e0f9fe0b4fed0ac2e0b8
+    .claude/skills/deploy-workspace/SKILL.md:
+      sha3_256: 4837de961d772d16d5aeefc3e23f80a666790d09f9c13893fa4fc09fe58f2f0e
+    .claude/skills/deploy-workspace/advanced-patterns.md:
+      sha3_256: b0c95c53020e6a09ff257b6125ad060d117741bf2e32625eaa2c7f36452b8be8
+    .claude/skills/deploy-workspace/runtime-settings.md:
+      sha3_256: 6212d9ff683ea9cb805547429b223e169622169457e296905d3a67c42ce1d58c
+    .claude/skills/deploy-workspace/scheduling-triggers.md:
+      sha3_256: 2c67e4c1a8012d75f1943d7e874df69d8898219973eb295b42c5c706f7274f8f
+    .claude/skills/prepare-deployment/SKILL.md:
+      sha3_256: 161646d939986d76364188b6ee375a5e2d61754b570926c52ce96ee3438c26ef
+    .claude/skills/prepare-deployment/check_destination.py:
+      sha3_256: 34ff49ae54a875f34f7900612d76b31d7aaf00926cc80c40d689474af4d447ec
+    .claude/skills/prepare-deployment/deployment-module.md:
+      sha3_256: 7febda25e999ddd05551036eeff285758fef41c7a25ec7dedd41dfc2f1151d24
+    .claude/skills/setup-runtime/SKILL.md:
+      sha3_256: ee6888e0cbefde7907599cb0ecd9907ab6a5edd789c6119a406ccf7fc1180ace
+    .claude/dlthub/agents/job-inspector/AGENT.md:
+      sha3_256: e0208119b1d92e727b4d0f9d0967d087cbc69f551b43256ce2e408fab42d8b85
+    .claude/dlthub/agents/job-inspector-eval/AGENT.md:
+      sha3_256: af97b998b265ab683eae78cd60130d606ec1e17ed84b4c640298f224d05bc2dd
+    .claude/dlthub/agents/job-inspector-eval/README.md:
+      sha3_256: d689ddc33d33c85951ef763ebbddd508648a3cc12ae7dd049ac96a69e7084f6f
+    .claude/dlthub/agents/job-inspector-eval/checks.py:
+      sha3_256: e0b55101cbb3cbc25fff8320a8241f38d4b3163ec16641d3b4497f7174dd9018
+    .claude/rules/dlthub-platform-job-resources.md:
+      sha3_256: 6b25dd45e2654e77b0997cbb3d8e4de43b1b119ef6b1e1e2d272b60069631d55
+    .claude/rules/dlthub-platform-profiles.md:
+      sha3_256: a157f370da79e9ad55745244982c6f634f320d1f14f8c62cd0942f16478b5ac3
+    .claude/rules/dlthub-platform-workflow.md:
+      sha3_256: 7a16d8d1eda959978d3d1f51eab7f4fdc927bc8e13d97a2e50707dd533532d3d
