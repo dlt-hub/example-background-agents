@@ -1,0 +1,45 @@
+name: Deploy to dltHub production workspace
+
+# launch when `main` branch is updated
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    # use the GitHub secrets under `production` environment
+    environment: production
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          # required for private GitHub repository
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install Python dependencies
+        run: |
+          uv sync --locked
+
+      - name: Inject `secrets.toml`
+        env:
+          DLTHUB_SECRETS_TOML: ${{ secrets.DLTHUB_SECRETS_TOML }}
+        run: |
+          if [ -z "$DLTHUB_SECRETS_TOML" ]; then
+            echo "::error::DLTHUB_SECRETS_TOML secret is empty or missing on the production environment"
+            exit 1
+          fi
+          mkdir -p .dlt
+          printf '%s' "$DLTHUB_SECRETS_TOML" > .dlt/secrets.toml
+
+      - name: Deploy dltHub production
+        env:
+          RUNTIME__API_KEY: ${{ secrets.DLTHUB_API_KEY }}
+        run: |
+          uv run dlthub local profile use prod
+          uv run dlthub deploy
