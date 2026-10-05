@@ -1,6 +1,6 @@
 ---
-name: hackathon
-description: "Onboard a hackathon participant to the dltHub background agents workspace. MUST use when the user asks 'how do I get started', 'set me up', 'what is this repo', 'what am I supposed to do', 'what are the steps', 'how do I deploy this', or opens this workspace for the first time. Covers prerequisites, workspace setup, model credentials, deploying, running the job-inspector agent on a failing pipeline, the GitHub Action for CI deploys, and pointers to write a custom agent. Do NOT use for writing an agent's prompt or output schema — read the docs listed below for that."
+name: private-preview
+description: "Onboard a design partner to the dltHub background agents private preview. MUST use when the user asks 'how do I get started', 'set me up', 'what is this repo', 'what am I supposed to do', 'what are the steps', 'how do I deploy this', or opens this workspace for the first time. Covers prerequisites, workspace setup, model credentials, deploying, running the job-inspector agent on a failing pipeline, and pointers to write a custom agent. Do NOT use for writing an agent's prompt or output schema — read the docs listed below for that."
 ---
 
 # Background agents private preview
@@ -60,27 +60,7 @@ I'll configure the model key and endpoint myself. Never ask for them, put them
 in a command, or write them to a file.
 ```
 
-**3. Point at the right dltHub workspace.** The CLI and every `uv run dlthub`
-command find the workspace by the `workspace_id` and `organization_id` in
-`.dlt/config.toml` — without them, `deploy` and `job trigger` go nowhere or
-hit the wrong workspace. The repo ships with the hackathon-shared pair under
-`[runtime]`; keep them if the partner is using the shared workspace, or
-replace both with the pair for their own workspace:
-
-```toml
-[runtime]
-workspace_id = "<uuid>"           # from https://app.dlthub.com → Workspace settings
-organization_id = "<uuid>"        # from https://app.dlthub.com → Organization settings
-
-[workspace.settings]
-name = "<name>"                   # free-form label, shows up in the UI
-```
-
-Ask the partner which workspace they want to deploy into before editing these.
-After the change, `uv run dlthub ai status` should print the workspace name
-and no warnings.
-
-**4. Model and key — partner does this themselves.** Hand over both blocks
+**3. Model and key — partner does this themselves.** Hand over both blocks
 below and ask them to fill in the placeholders in their own editor and
 terminal. Do not fill in any value for them, do not run these commands, and do
 not ask what the values are — the key never enters this session, and the model
@@ -110,33 +90,11 @@ secret because the platform runner cannot read their shell. If the workspace
 is not connected yet, they run `uv run dlthub workspace connect` between
 `login` and `variable set`.
 
-**5. Deploy.**
+**4. Deploy.**
 
 ```bash
 uv run dlthub deploy
 ```
-
-## Deploy from GitHub Actions
-
-`.github/workflows/prod-deploy.yaml` deploys the workspace to the dltHub
-production profile on every push to `main`. The job runs `uv sync --locked`,
-writes `.dlt/secrets.toml` from a GitHub secret, switches to the `prod` profile,
-and runs `uv run dlthub deploy`.
-
-**Set these in the repo's `production` GitHub Environment** (Settings →
-Environments → `production`):
-
-| secret | what it holds |
-|---|---|
-| `DLTHUB_SECRETS_TOML` | the full contents of the prod `secrets.toml` (every key the deployed pipelines and agents read at runtime, including `AGENT__API_KEY` if the agents need it on the platform) |
-| `DLTHUB_API_KEY` | the dltHub platform API key — the workflow exports it as `RUNTIME__API_KEY` so `dlthub deploy` can authenticate |
-
-The partner generates `DLTHUB_API_KEY` the same way they did for local use
-(`dlthub login` issues one per workspace). `DLTHUB_SECRETS_TOML` is the paste
-of their local prod `secrets.toml` — never commit that file, and never read it
-back from the workflow logs. If `DLTHUB_SECRETS_TOML` is missing or empty the
-job fails fast with an explicit error, so a misconfigured environment never
-silently deploys a broken workspace.
 
 ## What is in the workspace
 
