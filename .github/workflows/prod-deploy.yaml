@@ -31,8 +31,8 @@ jobs:
           DLTHUB_SECRETS_TOML: ${{ secrets.DLTHUB_SECRETS_TOML }}
         run: |
           if [ -z "$DLTHUB_SECRETS_TOML" ]; then
-            echo "::warning::DLTHUB_SECRETS_TOML secret is empty or missing on the production environment; skipping secrets.toml injection"
-            exit 0
+            echo "::error::DLTHUB_SECRETS_TOML secret is empty or missing on the production environment"
+            exit 1
           fi
           mkdir -p .dlt
           printf '%s' "$DLTHUB_SECRETS_TOML" > .dlt/secrets.toml
